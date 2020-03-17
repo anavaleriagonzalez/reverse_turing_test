@@ -17,6 +17,7 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--num_epochs', type=int, help='number of epochs to train for', default=250)
 parser.add_argument('--dataset', type=str, help='data set')
 parser.add_argument('--input_size', type=int, help='input size for aux task', default=1024)
+parser.add_argument('--mlp2', type= str, default="True")
 
 parser.add_argument('--hidden_size', type=int, help='hidden size', default=100)
 parser.add_argument('--batch_size', type=int, help='batch size', default=100)
@@ -26,6 +27,8 @@ parser.add_argument('--lr', type=float, help='learning rate', default=0.001)
 parser.add_argument('--model_output', type=str, help='path to model checkpoints')
 
 args = parser.parse_args()
+
+mlp2 = args.mlp2
 
 dataset= args.dataset
 # Hyper parameters
@@ -37,9 +40,6 @@ hidden_size = args.hidden_size
 
 #input sizes are the same
 input_size = args.input_size
-
-
-
 
 output_path = args.model_output
 
@@ -71,8 +71,11 @@ train = list(zip(torch.tensor(train['features'].tolist()), torch.tensor(train['e
 test = list(zip(torch.tensor(test['features'].tolist()), torch.tensor(test['encoded_labels'].tolist())))
 dev = list(zip(torch.tensor(dev['features'].tolist()), torch.tensor(dev['encoded_labels'].tolist())))
 
-
-model = MLP(input_size,hidden_size,num_classes)
+if mlp2 == True:
+    model = MLP2(input_size,hidden_size,num_classes)
+else:
+    print("loading single layered MLP")
+    model = MLP(input_size,hidden_size,num_classes)
 
 
 # Loss and optimizer
