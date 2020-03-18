@@ -30,7 +30,11 @@ def evaluate(output_path,device,model, data_loader,best_score,  dev=True):
  
         if dev == False:
             print('Test Accuracy of the model : {} %'.format(100 * correct / total))
-            return best_score, model, preds
+
+            
+          
+            
+            return best_score, model, outputs
 
 
 
@@ -48,7 +52,4 @@ def evaluate(output_path,device,model, data_loader,best_score,  dev=True):
             
             model.load_state_dict(torch.load(output_path+'model.ckpt'))
 
-
-
-        
-        return best_score, model, preds
+        return best_score, model, outputs
